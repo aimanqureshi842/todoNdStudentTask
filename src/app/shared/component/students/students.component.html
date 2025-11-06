@@ -23,7 +23,14 @@
                     <label for="contact">Contact <sup>*</sup></label>
                     <input type="text" id="contact" class="form-control" #contact>
                 </div>
-                <button mat-stroked-button color="primary" class="btn-block" (click)="onStdAdd()"> Add Student</button>
+                <button mat-stroked-button color="primary" class="btn-block" (click)="onStdAdd()" *ngIf="!isInEditMode ;else editMode">
+                    Add Student</button>
+                <ng-template #editMode>
+                    <button mat-stroked-button color="primary" class="btn-block" (click)="onStdUpd()">
+                        Update Student
+                    </button>
+
+                </ng-template>
 
             </div>
         </div>
@@ -46,19 +53,19 @@
                     <tbody>
                         <tr *ngFor="let std of studentsArray; index as i">
                             <td>{{i+1}}</td>
-                            <td>{{std.studentName}} {{std.surName}}</td>
+                            <td>{{std.studentName|titlecase}} {{std.surName|titlecase}}</td>
                             <td>{{std.age}}</td>
-                            <td>{{std.email}}</td>
+                            <td>{{std.email|titlecase}}</td>
                             <td>{{std.contact}}</td>
                             <td>
                                 <button mat-icon-button color="primary"
-                                    aria-label="Example icon button with a home icon">
+                                    aria-label="Example icon button with a home icon" (click)="onStdEdit(std)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
                             </td>
                             <td>
-                                <button mat-icon-button color="warn"
-                                    aria-label="Example icon button with a home icon" (click)="onStdRemove(std)">
+                                <button mat-icon-button color="warn" aria-label="Example icon button with a home icon"
+                                    (click)="onStdRemove(std)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
 

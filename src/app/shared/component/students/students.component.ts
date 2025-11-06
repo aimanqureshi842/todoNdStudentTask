@@ -12,7 +12,8 @@ export class StudentsComponent implements OnInit {
   @ViewChild('surName') surName!: ElementRef;
   @ViewChild('age') age!: ElementRef;
   @ViewChild('email') email!: ElementRef;
-  @ViewChild('contact') contact!: ElementRef
+  @ViewChild('contact') contact!: ElementRef;
+  isInEditMode: boolean = false;
   studentsArray: Array<Istudent> = [
     {
       studentName: 'Aiman',
@@ -36,15 +37,15 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-       Uuid = ()=> {
+  Uuid = () => {
     return (
       String('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')
     ).replace(/[xy]/g, (character) => {
       const random = (Math.random() * 16) | 0;
       const value = character === "x" ? random : (random & 0x3) | 0x8;
       return value.toString(16);
-});
-};
+    });
+  };
 
   onStdAdd() {
     if (this.stdName.nativeElement.value, this.surName.nativeElement.value, this.age.nativeElement.value, this.email.nativeElement.value, this.contact.nativeElement.value) {
@@ -54,7 +55,7 @@ export class StudentsComponent implements OnInit {
         age: +this.age.nativeElement.value,
         email: this.email.nativeElement.value,
         contact: +this.contact.nativeElement.value,
-        stdId:this.Uuid()
+        stdId: this.Uuid()
       }
       console.log(stdObj)
       this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
@@ -63,10 +64,41 @@ export class StudentsComponent implements OnInit {
     }
   }
   onStdRemove(studentObj: Istudent) {
-    let findIndex = this.studentsArray.findIndex(std =>std.stdId===studentObj.stdId)
-          this.studentsArray.splice(findIndex,1)
-          this._snackBarService.openSnackbar(`student " ${studentObj.studentName} ${studentObj.surName}" deleted successfully!`)
+    let findIndex = this.studentsArray.findIndex(std => std.stdId === studentObj.stdId)
+    this.studentsArray.splice(findIndex, 1)
+    this._snackBarService.openSnackbar(`student " ${studentObj.studentName} ${studentObj.surName}" deleted successfully!`)
   }
 
+  onStdEdit(std: Istudent) {
+    this.isInEditMode = true;
+    this.stdName.nativeElement.value = std.studentName;
+    this.surName.nativeElement.value = std.surName;
+    this.age.nativeElement.value = std.age;
+    this.email.nativeElement.value = std.email;
+    this.contact.nativeElement.value = std.contact;
+    let Edit_id = std.stdId;
+    localStorage.setItem("Edit_id", Edit_id)
+  }
+  onStdUpd() {
+    this.isInEditMode = false
+    let Updated_id = localStorage.getItem("Edit_id")
+    if (this.stdName.nativeElement.value, this.surName.nativeElement.value, this.age.nativeElement.value, this.email.nativeElement.value, this.contact.nativeElement.value, Updated_id) {
+      let updatedObj = {
+        studentName: this.stdName.nativeElement.value,
+        surName: this.surName.nativeElement.value,
+        age: +this.age.nativeElement.value,
+        email: this.email.nativeElement.value,
+        contact: +this.contact.nativeElement.value,
+        stdId: Updated_id
+      }
+      // console.log(updatedObj)
+      let getIndex = this.studentsArray.findIndex(std => std.stdId === Updated_id)
+      this.studentsArray[getIndex] = updatedObj
+      this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
+      this._snackBarService.openSnackbar(`student "${updatedObj.studentName} ${updatedObj.surName}" added successfully! `)
+
+    }
+
+  }
 
 }

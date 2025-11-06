@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="stdName">Name <sup>*</sup>
+                    </label>
+                    <input type="text" id="stdName" class="form-control" #name>
+                </div>
+                <div class="form-group">
+                    <label for="surName">SurName <sup>*</sup></label>
+                    <input type="text" id="surName" class="form-control" #surName>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="text" id="age" class="form-control" #age>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email <sup>*</sup></label>
+                    <input type="text" id="email" class="form-control" #email>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact <sup>*</sup></label>
+                    <input type="text" id="contact" class="form-control" #contact>
+                </div>
+                <button mat-stroked-button color="primary" class="btn-block" (click)="onStdAdd()"> Add Student</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered" *ngIf="studentsArray.length>0;else noStdAdded">
+                    <thead>
+                        <tr>
+                            <th>Sr no</th>
+                            <th>Full Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Edit</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let std of studentsArray; index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{std.studentName}} {{std.surName}}</td>
+                            <td>{{std.age}}</td>
+                            <td>{{std.email}}</td>
+                            <td>{{std.contact}}</td>
+                            <td>
+                                <button mat-icon-button color="primary"
+                                    aria-label="Example icon button with a home icon">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                            </td>
+                            <td>
+                                <button mat-icon-button color="warn"
+                                    aria-label="Example icon button with a home icon" (click)="onStdRemove(std)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #noStdAdded>
+                    <p class="alert alert-info"><strong>No student data added yet!</strong></p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="" class="form-control" #todoEle>
+                </div>
+                <button (click)="onTodoAdd()"
+                class="btn btn-primary btn-block" *ngIf="!isInEditMode">Add Todo</button>
+                <button class="btn btn-primary btn-block" *ngIf="isInEditMode" (click)="onUpdate()">Update Todo</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group" *ngIf="todosArray.length>0 ;else noTodoAdd">
+                    <li class="list-group-item d-flex justify-content-between" *ngFor="let todo of todosArray">
+                        <strong>{{todo.todoItem|titlecase}}</strong>
+                        <div>
+                            <button class="btn btn-outline-primary mr-3" (click)="onEdit(todo)" >Edit</button>
+                            <button  class="btn btn-outline-danger" 
+                            (click)="onRemove(todo)">Remove</button>
+
+                        </div>
+                    </li>
+                </ul>
+                <ng-template #noTodoAdd>
+                    <p class="alert alert-info">
+                   <strong>No todo data added to list !!</strong>
+                    </p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

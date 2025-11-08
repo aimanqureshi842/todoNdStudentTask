@@ -2,6 +2,7 @@
     <div class="col-md-5">
         <div class="card">
             <div class="card-body">
+                <h1>{{isInEditMode? 'Edit Student': 'Add New Student'}}</h1>
                 <div class="form-group">
                     <label for="stdName">Name <sup>*</sup>
                     </label>
@@ -23,13 +24,16 @@
                     <label for="contact">Contact <sup>*</sup></label>
                     <input type="text" id="contact" class="form-control" #contact>
                 </div>
-                <button mat-stroked-button color="primary" class="btn-block" (click)="onStdAdd()" *ngIf="!isInEditMode ;else editMode">
+                <button mat-stroked-button color="primary" class="btn-block" (click)="onStdAdd()"
+                    *ngIf="!isInEditMode ;else editMode">
                     Add Student</button>
                 <ng-template #editMode>
                     <button mat-stroked-button color="primary" class="btn-block" (click)="onStdUpd()">
                         Update Student
                     </button>
-
+                    <button mat-stroked-button color="primary" class="btn-block" (click)="onStdCancel()">
+                        Cancel Edit
+                    </button>
                 </ng-template>
 
             </div>
@@ -65,6 +69,7 @@
                             </td>
                             <td>
                                 <button mat-icon-button color="warn" aria-label="Example icon button with a home icon"
+                                [disabled]="std.stdId===Edit_id"
                                     (click)="onStdRemove(std)">
                                     <mat-icon>delete</mat-icon>
                                 </button>

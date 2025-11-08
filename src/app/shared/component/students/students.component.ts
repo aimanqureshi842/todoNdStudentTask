@@ -14,6 +14,9 @@ export class StudentsComponent implements OnInit {
   @ViewChild('email') email!: ElementRef;
   @ViewChild('contact') contact!: ElementRef;
   isInEditMode: boolean = false;
+  Edit_id!:string;
+  
+
   studentsArray: Array<Istudent> = [
     {
       studentName: 'Aiman',
@@ -61,23 +64,29 @@ export class StudentsComponent implements OnInit {
       this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
       this.studentsArray.push(stdObj)
       this._snackBarService.openSnackbar(`student "${stdObj.studentName} ${stdObj.surName}" added successfully! `)
+    } else {
+      alert('Please Enter Full Details!!!')
     }
   }
   onStdRemove(studentObj: Istudent) {
+    let getConfirm = confirm(`Are you sure you want to delete this student  ${studentObj.studentName} ${studentObj.surName} `)
+    if (getConfirm) {
+
     let findIndex = this.studentsArray.findIndex(std => std.stdId === studentObj.stdId)
     this.studentsArray.splice(findIndex, 1)
     this._snackBarService.openSnackbar(`student " ${studentObj.studentName} ${studentObj.surName}" deleted successfully!`)
+    }
   }
 
   onStdEdit(std: Istudent) {
-    this.isInEditMode = true;
-    this.stdName.nativeElement.value = std.studentName;
-    this.surName.nativeElement.value = std.surName;
-    this.age.nativeElement.value = std.age;
-    this.email.nativeElement.value = std.email;
-    this.contact.nativeElement.value = std.contact;
-    let Edit_id = std.stdId;
-    localStorage.setItem("Edit_id", Edit_id)
+      this.isInEditMode = true;
+      this.stdName.nativeElement.value = std.studentName;
+      this.surName.nativeElement.value = std.surName;
+      this.age.nativeElement.value = std.age;
+      this.email.nativeElement.value = std.email;
+      this.contact.nativeElement.value = std.contact;
+      this.Edit_id = std.stdId;
+      localStorage.setItem("Edit_id", this.Edit_id)
   }
   onStdUpd() {
     this.isInEditMode = false
@@ -96,9 +105,14 @@ export class StudentsComponent implements OnInit {
       this.studentsArray[getIndex] = updatedObj
       this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
       this._snackBarService.openSnackbar(`student "${updatedObj.studentName} ${updatedObj.surName}" added successfully! `)
+      this.Edit_id=''
 
     }
 
   }
+  onStdCancel() {
+    this.isInEditMode = false;
+    this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
 
+  }
 }

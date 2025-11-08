@@ -113,6 +113,7 @@ export class StudentsComponent implements OnInit {
   onStdCancel() {
     this.isInEditMode = false;
     this.stdName.nativeElement.value = this.surName.nativeElement.value = this.age.nativeElement.value = this.email.nativeElement.value = this.contact.nativeElement.value = ''
+    this.Edit_id=''
 
   }
 }

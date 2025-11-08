@@ -8,76 +8,79 @@ import { Itodo } from '../../models/todoInterface';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
-todosArray:Array<Itodo>=[
-  {
-    todoItem:'javascript',
-    todoId:'1234'
-  },{
-    todoItem:'sass',
-    todoId:'1235'
-  }
-]
-isInEditMode:boolean=false;
-@ViewChild('todoEle') eleRef!:ElementRef
-  constructor(private _snackBarService:SnackbarService) { }
+  todosArray: Array<Itodo> = [
+    {
+      todoItem: 'javascript',
+      todoId: '1234'
+    }, {
+      todoItem: 'sass',
+      todoId: '1235'
+    }
+  ]
+  isInEditMode: boolean = false;
+  Edit_id!:string;
+  @ViewChild('todoEle') eleRef!: ElementRef
+  constructor(private _snackBarService: SnackbarService) { }
 
   ngOnInit(): void {
   }
-     Uuid = ()=> {
+  Uuid = () => {
     return (
       String('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')
     ).replace(/[xy]/g, (character) => {
       const random = (Math.random() * 16) | 0;
       const value = character === "x" ? random : (random & 0x3) | 0x8;
       return value.toString(16);
-});
-};
+    });
+  };
 
-  onTodoAdd(){
-    if(this.eleRef.nativeElement.value){
-          let todoObj={
-      todoItem:this.eleRef.nativeElement.value,
-      todoId:this.Uuid()
+  onTodoAdd() {
+    if (this.eleRef.nativeElement.value) {
+      let todoObj = {
+        todoItem: this.eleRef.nativeElement.value,
+        todoId: this.Uuid()
+      }
+      this.todosArray.push(todoObj)
+      // console.log(todoObj)
+      this.eleRef.nativeElement.value = ''
+      this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" added successfully!!`)
     }
-    this.todosArray.push(todoObj)
-    // console.log(todoObj)
-     this.eleRef.nativeElement.value=''
-     this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" added successfully!!`)
   }
+  onRemove(todoObj: Itodo) {
+    let findIndex = this.todosArray.findIndex(todo => todo.todoId === todoObj.todoId);
+    this.todosArray.splice(findIndex, 1)
+    this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" removed successfully!!!`)
+
   }
-onRemove(todoObj:Itodo){
-    let findIndex=this.todosArray.findIndex(todo=>todo.todoId===todoObj.todoId);
-  this.todosArray.splice(findIndex,1)
-  this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" removed successfully!!!`)
-
-}
-onEdit(todo:Itodo){
-this.isInEditMode=true;
-// let getObj=this.todosArray.find(todo=>todo.todoId===todo.todoId)
-this.eleRef.nativeElement.value=todo.todoItem
-let Edit_id=todo.todoId;
-localStorage.setItem("Edit_id",Edit_id)
-// console.log(getObj)
-}
-onUpdate(){
-let Updated_id=localStorage.getItem("Edit_id");
-localStorage.removeItem("Edit_id");
-if(Updated_id){
-  let updatedObj={
-    todoItem:this.eleRef.nativeElement.value,
-    todoId:Updated_id
+  onEdit(todo: Itodo) {
+    this.isInEditMode = true;
+    // let getObj=this.todosArray.find(todo=>todo.todoId===todo.todoId)
+    this.eleRef.nativeElement.value = todo.todoItem
+    this.Edit_id = todo.todoId;
+    localStorage.setItem("Edit_id", this.Edit_id)
+    // console.log(getObj)
   }
-  let getindex=this.todosArray.findIndex(todo=>todo.todoId===Updated_id);
-  this.todosArray[getindex]=updatedObj
-  this.eleRef.nativeElement.value=''
-  this.isInEditMode=false
-  this._snackBarService.openSnackbar(`the todoItem " ${updatedObj.todoItem}" updated successfully!!!`)
-}
+  onUpdate() {
+    let Updated_id = localStorage.getItem("Edit_id");
+    localStorage.removeItem("Edit_id");
+    if (Updated_id) {
+      let updatedObj = {
+        todoItem: this.eleRef.nativeElement.value,
+        todoId: Updated_id
+      }
+      let getindex = this.todosArray.findIndex(todo => todo.todoId === Updated_id);
+      this.todosArray[getindex] = updatedObj
+      this.eleRef.nativeElement.value = ''
+      this.isInEditMode = false
+      this._snackBarService.openSnackbar(`the todoItem " ${updatedObj.todoItem}" updated successfully!!!`)
+      this.Edit_id=''
+    }
+  }
+  onCancel() {
+    this.isInEditMode = false;
+    this.eleRef.nativeElement.value = ''
+    this.Edit_id=''
 
+  }
 
-  // let getUpdatedObj={
-  //   todoItem:this.eleRef.nativeElement.value
-    
-  // }
-}
 }

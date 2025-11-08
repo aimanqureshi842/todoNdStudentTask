@@ -44,9 +44,12 @@ export class TodosComponent implements OnInit {
       // console.log(todoObj)
       this.eleRef.nativeElement.value = ''
       this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" added successfully!!`)
+    }else{
+      alert('Please add todoItem !')
     }
   }
   onRemove(todoObj: Itodo) {
+    let getConfirm=confirm(`Are you sure you want to remove this todo ${todoObj.todoItem}`)
     let findIndex = this.todosArray.findIndex(todo => todo.todoId === todoObj.todoId);
     this.todosArray.splice(findIndex, 1)
     this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" removed successfully!!!`)

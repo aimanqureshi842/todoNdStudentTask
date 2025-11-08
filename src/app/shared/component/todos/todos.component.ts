@@ -50,9 +50,10 @@ export class TodosComponent implements OnInit {
   }
   onRemove(todoObj: Itodo) {
     let getConfirm=confirm(`Are you sure you want to remove this todo ${todoObj.todoItem}`)
+    if(getConfirm){
     let findIndex = this.todosArray.findIndex(todo => todo.todoId === todoObj.todoId);
     this.todosArray.splice(findIndex, 1)
-    this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" removed successfully!!!`)
+    this._snackBarService.openSnackbar(`TodoItem "${todoObj.todoItem}" removed successfully!!!`)}
 
   }
   onEdit(todo: Itodo) {
